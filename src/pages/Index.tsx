@@ -1,17 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { SearchSection } from "@/components/SearchSection";
 import { CountriesGrid } from "@/components/CountriesGrid";
 import { CountryModal } from "@/components/CountryModal";
 import { Footer } from "@/components/Footer";
-import { Country, SearchType, searchCountries } from "@/lib/countries-api";
+import { Country, SearchType, searchCountries, getAllCountries } from "@/lib/countries-api";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [countries, setCountries] = useState<Country[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(true);
+
+  useEffect(() => {
+    const fetchAllCountries = async () => {
+      try {
+        const allCountries = await getAllCountries();
+        setCountries(allCountries.sort((a, b) => a.name.common.localeCompare(b.name.common)));
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load countries. Please refresh the page.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllCountries();
+  }, []);
 
   const handleSearch = async (query: string, searchType: SearchType) => {
     setIsLoading(true);
