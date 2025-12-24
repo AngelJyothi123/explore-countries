@@ -1,5 +1,5 @@
-import { Country, formatPopulation, formatArea } from "@/lib/countries-api";
-import { X, Users, MapPin, Globe2, Languages, Coins, Map, Clock, Maximize2 } from "lucide-react";
+import { Country, formatPopulation } from "@/lib/countries-api";
+import { X, Users, MapPin, Globe2, Languages, Coins, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CountryModalProps {
@@ -61,13 +61,10 @@ export function CountryModal({ country, onClose }: CountryModalProps) {
           {/* Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <InfoItem icon={<Users className="w-5 h-5" />} label="Population" value={formatPopulation(country.population)} />
-            <InfoItem icon={<Globe2 className="w-5 h-5" />} label="Region" value={`${country.region}${country.subregion ? ` / ${country.subregion}` : ''}`} />
+            <InfoItem icon={<Globe2 className="w-5 h-5" />} label="Region" value={country.region || 'N/A'} />
             <InfoItem icon={<MapPin className="w-5 h-5" />} label="Capital" value={country.capital?.join(', ') || 'N/A'} />
-            <InfoItem icon={<Maximize2 className="w-5 h-5" />} label="Area" value={country.area ? formatArea(country.area) : 'N/A'} />
             <InfoItem icon={<Languages className="w-5 h-5" />} label="Languages" value={languages} />
             <InfoItem icon={<Coins className="w-5 h-5" />} label="Currencies" value={currencies} />
-            <InfoItem icon={<Map className="w-5 h-5" />} label="Continent" value={country.continents.join(', ')} />
-            <InfoItem icon={<Clock className="w-5 h-5" />} label="Timezones" value={country.timezones?.slice(0, 2).join(', ') || 'N/A'} />
           </div>
 
           {/* Borders */}
