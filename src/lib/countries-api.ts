@@ -74,7 +74,8 @@ export async function searchCountries(query: string, searchType: SearchType): Pr
 }
 
 export async function getAllCountries(): Promise<Country[]> {
-  const response = await fetch(`${BASE_URL}/all`);
+  const fields = 'name,cca2,cca3,capital,region,subregion,population,area,flags,languages,currencies,borders,timezones,continents,maps,coatOfArms,latlng';
+  const response = await fetch(`${BASE_URL}/all?fields=${fields}`);
   
   if (!response.ok) {
     throw new Error('Failed to fetch countries');
